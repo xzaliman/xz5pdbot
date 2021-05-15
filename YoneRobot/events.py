@@ -8,12 +8,12 @@ from pathlib import Path
 from telethon import events
 
 from pymongo import MongoClient
-from YoneRobot import MONGO_DB_URI
-from YoneRobot import telethn
+from xz5pdbot import MONGO_DB_URI
+from xz5pdbot import telethn
 
 client = MongoClient()
 client = MongoClient(MONGO_DB_URI)
-db = client["darkuserbot"]
+db = client["xz5pdbot"]
 gbanned = db.gban
 
 def register(**args):
@@ -146,7 +146,7 @@ def bot(**args):
     return decorator
 
 
-def YoneRobot(**args):
+def xz5pdbot(**args):
     pattern = args.get("pattern", None)
     disable_edited = args.get("disable_edited", False)
     ignore_unsafe = args.get("ignore_unsafe", False)
@@ -184,30 +184,30 @@ def load_module(shortname):
         import importlib
         import YoneRobot.events
 
-        path = Path(f"YoneRobot/modules/{shortname}.py")
-        name = "YoneRobot.modules.{}".format(shortname)
+        path = Path(f"xz5pdbot/modules/{shortname}.py")
+        name = "xz5pdbot.modules.{}".format(shortname)
         spec = importlib.util.spec_from_file_location(name, path)
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
         print("Successfully imported " + shortname)
     else:
         import importlib
-        import YoneRobot.events
+        import xz5pdbot.events
 
-        path = Path(f"YoneRobot/modules/{shortname}.py")
-        name = "YoneRobot.modules.{}".format(shortname)
+        path = Path(f"xz5pdbot/modules/{shortname}.py")
+        name = "xz5pdbot.modules.{}".format(shortname)
         spec = importlib.util.spec_from_file_location(name, path)
         mod = importlib.util.module_from_spec(spec)
         mod.register = register
-        mod.YoneRobot = YoneRobot
+        mod.xz5pdbot = xz5pdbot
         mod.tbot = telethn
         mod.logger = logging.getLogger(shortname)
         spec.loader.exec_module(mod)
-        sys.modules["YoneRobot.modules." + shortname] = mod
+        sys.modules["xz5pdbot.modules." + shortname] = mod
         print("Successfully imported " + shortname)
 
 
-path = "YoneRobot/modules/*.py"
+path = "xz5pdbot/modules/*.py"
 files = glob.glob(path)
 for name in files:
     with open(name) as f:
